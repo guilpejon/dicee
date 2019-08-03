@@ -1,3 +1,4 @@
+import 'dart:math';
 import 'package:flutter/material.dart';
 
 void main() => runApp(MyApp());
@@ -28,36 +29,70 @@ class _MyHomePageState extends State<MyHomePage> {
   int _topDiceNumber = 1;
   int _bottomDiceNumber = 1;
 
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
+  void _rollDices() {
+    setState(
+      () {
+        _topDiceNumber = Random().nextInt(6) + 1;
+        _bottomDiceNumber = Random().nextInt(6) + 1;
+      },
+    );
+  }
+
+  void _rollBottomDice() {
+    setState(
+      () {
+        _bottomDiceNumber = Random().nextInt(6) + 1;
+      },
+    );
+  }
+
+  void _rollTopDice() {
+    setState(
+      () {
+        _topDiceNumber = Random().nextInt(6) + 1;
+      },
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.teal,
       appBar: AppBar(
         title: Text(widget.title),
       ),
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.display1,
-            ),
-          ],
+        child: FlatButton(
+          onPressed: () {
+            _rollDices();
+          },
+          child: Column(
+            children: <Widget>[
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(50, 50, 50, 25),
+                  child: FlatButton(
+                    onPressed: () {
+                      _rollTopDice();
+                    },
+                    child: Image.asset('images/dice$_topDiceNumber.png'),
+                  ),
+                ),
+              ),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(50, 25, 50, 50),
+                  child: FlatButton(
+                    onPressed: () {
+                      _rollBottomDice();
+                    },
+                    child: Image.asset('images/dice$_bottomDiceNumber.png'),
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: Icon(Icons.add),
       ),
     );
   }
